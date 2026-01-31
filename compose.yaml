@@ -1,0 +1,13 @@
+version: "3.9"
+
+services:
+  website:
+    image: node:20-alpine
+    container_name: website
+    working_dir: /app
+    ports:
+      - "7000:7000"
+    volumes:
+      - ./:/app
+    command: nodemon --watch . --ext js,html,css server.js
+    restart: unless-stopped

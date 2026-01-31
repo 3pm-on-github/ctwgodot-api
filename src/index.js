@@ -6,11 +6,9 @@ const express = require('express');
 const app = express();
 const server = http.createServer(app);
 
-const PORT = process.env.PORT || 3000;
-const HOST = process.env.HOST || '127.0.0.1';
+const PORT = process.env.PORT || 7000;
+const HOST = process.env.HOST || '0.0.0.0';
 const STAGES_DIR = path.join(__dirname, '..', 'db', 'stages');
-
-app.use(express.json({ limit: '10mb' }));
 
 fs.mkdirSync(STAGES_DIR, { recursive: true });
 
@@ -92,6 +90,10 @@ app.get('/api/v1/stagepopuptext/:id', (req, res) => {
     });
 })
 
+app.use(express.text({
+    type: 'text/*',
+    limit: '10mb'
+}));
 app.post('/api/v1/uploadstage/:id', (req, res) => {
     const stageID = path.basename(req.params.id);
     const filePath = path.join(STAGES_DIR, stageID);
@@ -101,18 +103,12 @@ app.post('/api/v1/uploadstage/:id', (req, res) => {
         return res.status(400).json({ error: 'No data provided' });
     }
 
-    fs.writeFile(
-        filePath,
-        JSON.stringify(stageData, null, 2),
-        'utf8',
-        err => {
-            if (err) {
-                return res.status(500).json({ error: err.message });
-            }
-            res.json({ message: 'Stage uploaded', id: stageID });
-        }
-    );
+    fs.writeFile(filePath, stageData, 'utf8', err => {
+        if (err) return res.status(500).json({ error: err.message });
+        res.json({ message: 'Stage uploaded', id: stageID });
+    });
 });
+
 
 server.listen(PORT, HOST, () => {
     console.log(`Server running at http://${HOST}:${PORT}`);
