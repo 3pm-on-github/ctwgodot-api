@@ -4,7 +4,7 @@ WORKDIR /app
 
 COPY . .
 
-RUN npm install -g nodemon
+RUN npm install -g nodemon obscenity
 
 EXPOSE 7000
 

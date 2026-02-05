@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>ctwgodot main page</title>
+
+        <style>
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+
+:root {
+    --bg1: #f7f8fc;
+    --bg2: #eef1ff;
+    --accent: #6c63ff;
+    --accent-hover: #5a52e0;
+    --text: #2b2b2b;
+    --muted: #777;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Nunito', Arial, sans-serif;
+    background: linear-gradient(135deg, var(--bg1), var(--bg2));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    color: var(--text);
+}
+
+h1 {
+    margin-top: 0;
+    font-size: 1.8rem;
+}
+
+p {
+    color: var(--muted);
+    margin-bottom: 28px;
+    line-height: 1.5;
+}
+
+.select-group {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+select {
+    flex: 1;
+    min-width: 160px;
+    appearance: none;
+    padding: 12px 16px;
+    font-size: 15px;
+    border-radius: 999px;
+    border: 1px solid #ddd;
+    background: #fff;
+    cursor: pointer;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+select:focus {
+    outline: none;
+    border-color: var(--accent);
+}
+
+button {
+    margin-top: 24px;
+    width: 25%;
+    padding: 14px 18px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 999px;
+    border: none;
+    background: var(--accent);
+    color: #fff;
+    cursor: pointer;
+    transition: transform 0.15s, background 0.15s;
+}
+
+button:hover:not(:disabled) {
+    background: var(--accent-hover);
+    transform: translateY(-1px);
+}
+
+button:active:not(:disabled) {
+    transform: translateY(0);
+}
+
+button:disabled {
+    background: #cfcfcf;
+    color: #888;
+    cursor: not-allowed;
+}
+        </style>
+    </head>
+
+    <body>
+        <h1>click the wawas, they won't bite your cursor.</h1>
+        <p>ctw: godot is a free-to-win game where the goal is to click every wawas</p>
+
+        <div class="select-group">
+            <select name="version" id="version-select" required>
+                <option value="" disabled selected>Select the version</option>
+                <option value="stable">Stable</option>
+                <option value="fresh">Fresh</option>
+            </select>
+            <select name="system" id="system-select" required>
+                <option value="" disabled selected>Select your system</option>
+                <option value="windows">Windows</option>
+                <option value="linux">Linux</option>
+            </select>
+        </div>
+        <button disabled>start clicking wawas</button>
+        <script>
+const versionSelect = document.getElementById('version-select');
+const systemSelect = document.getElementById('system-select');
+const startButton = document.querySelector('button');
+
+versionSelect.addEventListener('change', updateButtonState);
+systemSelect.addEventListener('change', updateButtonState);
+
+let downloadLink = '';
+let gameVersion = '';
+
+function updateButtonState() {
+    if (versionSelect.value && systemSelect.value) {
+        const version = versionSelect.value;
+        const system = systemSelect.value;
+
+        if (version === 'stable' && system === 'windows') {
+            downloadLink = 'https://github.com/3pm-on-github/click-the-wawas-godot-edition/releases/download/v0.5.1/clickthewawas-godotedition-windows.zip';
+            gameVersion = '0.5.1';
+        } else if (version === 'stable' && system === 'linux') {
+            downloadLink = 'https://github.com/3pm-on-github/click-the-wawas-godot-edition/releases/download/v0.5.1/clickthewawas-godotedition-linux.zip';
+            gameVersion = '0.5.1';
+        } else if (version === 'fresh' && system === 'windows') {
+            downloadLink = 'https://github.com/3pm-on-github/click-the-wawas-godot-edition/releases/download/v0.5.2-fresh1/clickthewawas-godotedition-windows.zip';
+            gameVersion = '0.5.2-fresh1';
+        } else if (version === 'fresh' && system === 'linux') {
+            downloadLink = 'https://github.com/3pm-on-github/click-the-wawas-godot-edition/releases/download/v0.5.2-fresh1/clickthewawas-godotedition-linux.zip';
+            gameVersion = '0.5.2-fresh1';
+        }
+
+        startButton.textContent = `start clicking wawas (v${gameVersion})`;
+        startButton.disabled = false;
+    } else {
+        startButton.disabled = true;
+    }
+}
+
+startButton.addEventListener('click', () => {
+    if (downloadLink) {
+        window.location.href = downloadLink;
+    }
+});
+    </script>
+    </body>
+</html>
