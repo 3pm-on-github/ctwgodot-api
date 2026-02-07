@@ -8,6 +8,7 @@ services:
     ports:
       - "7000:7000"
     volumes:
-      - ./:/app
-    command: nodemon --watch . --ext js,html,css server.js
+      - ./:/app:cached   # improves file watching performance
+      - /app/node_modules # persist node_modules inside container
+    command: sh -c "npm install && npx nodemon --legacy-watch --watch . --ext js,html,css server.js"
     restart: unless-stopped
